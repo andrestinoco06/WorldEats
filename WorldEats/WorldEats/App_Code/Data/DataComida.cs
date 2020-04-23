@@ -48,4 +48,70 @@ public class DataComida
 
         return listComida;
     }
+
+    public bool registrarComida(EncapsulateComida comida)
+    {
+        DataTable dataComida = new DataTable();
+        Boolean respuesta = false;
+        NpgsqlConnection conection = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["Postgres"].ConnectionString);
+
+        try
+        {
+            NpgsqlDataAdapter dataAdapter = new NpgsqlDataAdapter("local.f_registrar_comida", conection);
+            dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+            dataAdapter.SelectCommand.Parameters.Add("_nombre", NpgsqlDbType.Text).Value = comida.Nombre;
+            dataAdapter.SelectCommand.Parameters.Add("_descripcion", NpgsqlDbType.Text).Value = comida.Descripcion;
+            dataAdapter.SelectCommand.Parameters.Add("_precio", NpgsqlDbType.Integer).Value = comida.Precio;
+            dataAdapter.SelectCommand.Parameters.Add("_cantidad_disponible", NpgsqlDbType.Integer).Value = comida.CantidadDisponible;
+            dataAdapter.SelectCommand.Parameters.Add("_id_local", NpgsqlDbType.Bigint).Value = comida.IdLocal;
+
+            conection.Open();
+            dataAdapter.Fill(dataComida);
+            respuesta = Convert.ToBoolean(dataComida.Rows[0].ItemArray[0]);
+        }
+        catch (Exception Ex)
+        {
+            throw Ex;
+        }
+        finally
+        {
+            if (conection != null)
+            {
+                conection.Close();
+            }
+        }
+        return respuesta;
+    }
+
+    public bool eliminarComida(EncapsulateComida comida)
+    {
+        DataTable dataComida = new DataTable();
+        Boolean respuesta = false;
+        NpgsqlConnection conection = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["Postgres"].ConnectionString);
+
+        try
+        {
+            NpgsqlDataAdapter dataAdapter = new NpgsqlDataAdapter("local.f_eliminar_comida", conection);
+            dataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+            dataAdapter.SelectCommand.Parameters.Add("_id_comida", NpgsqlDbType.Bigint).Value = comida.IdComida;
+
+            conection.Open();
+            dataAdapter.Fill(dataComida);
+            respuesta = Convert.ToBoolean(dataComida.Rows[0].ItemArray[0]);
+        }
+        catch (Exception Ex)
+        {
+            throw Ex;
+        }
+        finally
+        {
+            if (conection != null)
+            {
+                conection.Close();
+            }
+        }
+        return respuesta;
+    }
 }

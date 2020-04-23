@@ -79,7 +79,8 @@ public class DataLocal
             Eslogan = m.Field<string>("eslogan"),
             Ciudad = m.Field<string>("ciudad"),
             Direccion = m.Field<string>("direccion"),
-            Telefono = m.Field<long>("telefono")
+            Telefono = m.Field<long>("telefono"),
+            Doc_identidad = m.Field<string>("doc_identidad")
         }).ToList();
 
         return listLocal.OrderBy(x => x.Nombre).ToList();

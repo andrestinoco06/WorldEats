@@ -28,15 +28,17 @@ public partial class View_Usuario_IniciarSesion : System.Web.UI.Page
             if(listUsuario.Count > 0)
             {
                 EncapsulateUsuario usuarioIniciar = listUsuario.First();
+                Session["Nombre"] = usuarioIniciar.Nombre;
+                Session["Documento"] = usuarioIniciar.DocIdentidad;
 
                 switch (usuarioIniciar.IdRol)
                 {
-                    case 2:
+                    case 1:
                         Response.Redirect("~/View/SuperAdministrador/SuperAdministrador.aspx");
                         break;
-                    /*case 2:
-                        Response.Redirect("Administrador.aspx");
-                        break;*/
+                    case 2:
+                        Response.Redirect("~/View/Oferente/Oferente.aspx");
+                        break;
                     case 3:
                         Response.Redirect("Cliente.aspx");
                         break;
