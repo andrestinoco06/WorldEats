@@ -20,7 +20,8 @@ public partial class View_Oferente_Productos : System.Web.UI.Page
 
     public List<EncapsulateComida> GV_Comida_GetData()
     {
-        List<EncapsulateComida> busqueda = new DataComida().leerComida();
+        string filtro = Session["Documento"].ToString();
+        List<EncapsulateComida> busqueda = new DataComida().leerComida1(filtro);
         //List<EncapsulateCategoria> busqueda = new List<EncapsulateCategoria>();
         return busqueda.OrderBy(x => x.Descripcion).ToList();
     }
